@@ -24,7 +24,7 @@ class Table:
         table = ""
     
         for _ in range(self.m):
-            table += "| " + str(random.randint(10,1000)) + "." +  str(random.randint(1,1100)) + " "
+            table += "| " + str(random.randint(1,1100)) + "." +  str(random.randint(1,1100)) + " "
         table += "| \n"
         
         return table

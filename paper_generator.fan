@@ -20,7 +20,7 @@ def init():
 def title_generator():
     global titles, references
     if (not titles):
-        return "Hola "
+        return "Aspectos Generales"
     title_idx = random.randint(0, len(titles)-1)
     title = titles.pop(title_idx)
     references.append(title)
@@ -80,8 +80,8 @@ def get_unused_function() -> str:
 
 <section> ::= "## " <title> "\n" <sc_text> "\n" <content_1> "\n"
 
-<content_1> ::=  <sc_text> "\n " <table> "\n " <sc_text> "\n" <eq> "\n " <sc_text> "\n " #  <sub_section> | <section> | <sc_text> "\n" | <eq> "\n" <sc_text> "\n" <content_1>  "\n" |<eq> "\n" <sc_text> "\n" <sub_section> #<table> "\n" <sc_text> "\n" <content_1> "\n" 
-<sub_section> ::= "### " <title> "\n" <sc_text> "\n" <content_2> "\n"
+<content_1> ::=  <sc_text> "\n " <table> "\n " <sc_text> "\n" <eq> "\n " <sc_text> "\n " <sub_section> #| <section> | <sc_text> "\n" | <eq> "\n" <sc_text> "\n" <content_1>  "\n" |<eq> "\n" <sc_text> "\n" <sub_section> #<table> "\n" <sc_text> "\n" <content_1> "\n" 
+<sub_section> ::= "### " <title> "\n" <sc_text> "\n" #<content_2> "\n"
 
 <content_2> ::= <sub_section> |  <sub_sub_section> | <table> "\n" <sc_text> "\n" <content_2> "\n"|  <sc_text> "\n" | <eq> "\n" <sc_text> "\n" <content_2> "\n"
               
@@ -148,24 +148,24 @@ def get_unused_function() -> str:
 #? LENGUAJE (TASK 2/3) ----------------------------------------------------------------------------
 <paragraph> ::= <sentence>{3,} "\n"
 
-<sentence> ::= <svo> ". "| <pasiva> ". " | <compuesta> ". " | <compleja> ". "
+<sentence> ::= <svo> ". "| <passive> ". " | <compound> ". " | <complex_sentence> ". "
 
 <svo> ::= <suj> " " <pred>
 <pred> ::= <verb> " " <obj> | <verb> " " <obj> " " <cc>
 <obj> ::= <sust> | <prepo> " " <sust>
 
-<pasiva> ::= <suj> " " <verbpasivo> " " <obj> | <suj> " " <verbpasivo> " " <obj> " " <cc>
+<passive> ::= <suj> " " <pasive_verb> " " <obj> | <suj> " " <pasive_verb> " " <obj> " " <cc>
 
-<compuesta> ::= <svo> " " <conj> " " <svo_sub> | <pasiva> " " <conj> " " <pasiva_sub>
+<compound> ::= <svo> " " <conj> " " <svo_sub> | <passive> " " <conj> " " <pasive_sub>
 
-<compleja> ::= <svo> " " <subord> | <pasiva> " " <subord>
-<subord> ::= "que " <svo_sub> | "que " <pasiva_sub>
+<complex_sentence> ::= <svo> " " <subord> | <passive> " " <subord>
+<subord> ::= "que " <svo_sub> | "que " <pasive_sub>
 <svo_sub> ::= <sust> " " <pred>
-<pasiva_sub> ::= <sust> " " <verbpasivo> " " <obj> | <sust> " " <verbpasivo> " " <obj> " " <cc>
+<pasive_sub> ::= <sust> " " <pasive_verb> " " <obj> | <sust> " " <pasive_verb> " " <obj> " " <cc>
 
 <suj_generator> ::= <printable>* := fake.last_name() #Task 2
 
-<verbpasivo> ::= "fue demostrado" | "fue observado" | "fue analizado" | "fue implementado" | "fue evaluado" | "fue optimizado"
+<pasive_verb> ::= "fue demostrado" | "fue observado" | "fue analizado" | "fue implementado" | "fue evaluado" | "fue optimizado"
 <conj> ::= "y" | "pero" | "aunque" | "porque" | "debido a que"
 <suj> ::= "La teoria" | "La implementacion" | "La demostracion" | "El teorema" | "Los autores " <suj_generator> " y " <suj_generator> | "La doctora " <suj_generator> | "Andreas Zeller" | "La premisa" | "Los resultados" | "Lo visto" | "Una idea" | "Nosotros "
 <prepo> ::= "de" | "en" | "con" | "por" | "para" | "sobre" | "bajo" | "entre" | "hacia" | "desde" | "hasta" | "durante" | "mediante" | "segun"
@@ -201,7 +201,7 @@ def get_unused_function() -> str:
 <defined_function> ::= "\\sum_{"<index>"}^{"<index_sup>"}" | "\\int_{"<index>"}^{"<index>"}" | "\\oint_{"<index>"}^{"<index>"}" | "\\prod_{"<index>"}^{"<index>"}" | "\\sup_{"<index>"}" | "\\inf_{"<index>"}" | "\\max_{"<index>"}"| "\\min_{"<index>"}" | "\\lim_{ "<letter_variable> " \\rightarrow " <index> " }"
 <cuantifier> ::= "\\nabla" | "\\exists" | "\\nexists" | "\\partial" | "\\forall" 
 <index> ::= <variable> " = 0" 
-<index_sup> ::= <number>+ 
+<index_sup> ::= <_digit>+ 
 
 <variable> ::= " " <letter_variable> | " " <defined_variable>
 <letter_variable> ::= <printable>+ := get_unused_variable()
@@ -220,7 +220,7 @@ def get_unused_function() -> str:
 
 
 #? LLM (TASK 10) ----------------------------------------------------------------------------
-<paragraph_llm> ::= <scientific_sentence>{3,} <citation_sentence>
+<paragraph_llm> ::= <scientific_sentence>{3,} <citation_sentence> "\n "
 
 <scientific_sentence> ::= "El Teorema 1.1 establece la base de nuestro argumento. " |
     "Usando el lema anterior, obtenemos el resultado deseado. " |
@@ -272,4 +272,3 @@ def get_unused_function() -> str:
 #? CONSTRAINS (TASK 5) ----------------------------------------------------------------------------
 where valid_number(str(<row>))
 where len(str(<eq>)) > 40
-#where len(str(<index>)) <= 10
